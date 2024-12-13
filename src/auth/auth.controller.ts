@@ -1,9 +1,11 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SendSmsDto } from './dto/create-user.dto';
 import { Response } from 'express';
 import { verifyCodeDto } from './dto/verify-code.dto';
 import { statSync } from 'fs';
+import { RegisterDto } from './dto/register.dto';
+import { VerifyTokenGuard } from './guard/verify-token/verify-token.guard';
 
 @Controller('api')
 export class AuthController {
@@ -32,5 +34,18 @@ export class AuthController {
                 statusCode:200,
                 token,
             }) 
+        }
+
+        @Post('register')
+        @UseGuards(VerifyTokenGuard)
+        async register(
+            @Res() res:Response,
+            @Body() registerDto:RegisterDto
+        ){
+           const data =  await this.authService.register(registerDto);
+           return res.status(HttpStatus.OK).json({
+            msg:"user registered",
+            statusCode:HttpStatus.OK,
+           })
         }
 }

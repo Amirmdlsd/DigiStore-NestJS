@@ -29,6 +29,17 @@ export class UsersService {
     await this.userRepository.save(newData);
     return code;
    }
-   
+  async updateToken(token:string,phone:string){
+    const user = await this.userRepository.findOne({where:{phone}});
+        user.token = token;
+        await this.userRepository.save(user);
+  }
+  async updateUserInfo(phone:string,name:string,family:string){
+    const user = await this.userRepository.findOne({where:{phone}});
+    user.name = name;
+    user.family = family;
+   return await this.userRepository.save(user);   
+ 
+  }
    
 }
