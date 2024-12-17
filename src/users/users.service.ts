@@ -1,7 +1,9 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entity/user.entity';
 import { Repository } from 'typeorm';
+import { RegisterDto } from 'src/auth/dto/register.dto';
 
 @Injectable()
 export class UsersService {
@@ -34,12 +36,17 @@ export class UsersService {
         user.token = token;
         await this.userRepository.save(user);
   }
-  async updateUserInfo(phone:string,name:string,family:string){
-    const user = await this.userRepository.findOne({where:{phone}});
-    user.name = name;
-    user.family = family;
+
+  async registerUserInfo(registerDto :RegisterDto
+  ){
+    const user = await this.userRepository.findOne({where:{phone:registerDto.phone}});
+    user.name = registerDto.name;
+    user.family = registerDto.family;
+    user.avatar = registerDto.avatar;
+    user.lat = registerDto.lat;
+    user.long = registerDto.long;
+    user.phone = registerDto.phone;
    return await this.userRepository.save(user);   
- 
   }
    
 }

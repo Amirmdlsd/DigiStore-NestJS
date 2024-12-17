@@ -1,11 +1,12 @@
-import { Body, Controller, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Body, Controller, HttpStatus, Post, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SendSmsDto } from './dto/create-user.dto';
 import { Response } from 'express';
 import { verifyCodeDto } from './dto/verify-code.dto';
-import { statSync } from 'fs';
 import { RegisterDto } from './dto/register.dto';
 import { VerifyTokenGuard } from './guard/verify-token/verify-token.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('api')
 export class AuthController {
@@ -38,11 +39,13 @@ export class AuthController {
 
         @Post('register')
         @UseGuards(VerifyTokenGuard)
+        @UseInterceptors(FileInterceptor('avatar'))
         async register(
+            @UploadedFile() avatar:Express.Multer.File,
             @Res() res:Response,
             @Body() registerDto:RegisterDto
         ){
-           const data =  await this.authService.register(registerDto);
+           await this.authService.register(registerDto,avatar);
            return res.status(HttpStatus.OK).json({
             msg:"user registered",
             statusCode:HttpStatus.OK,

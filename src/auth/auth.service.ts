@@ -1,11 +1,9 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { BadRequestException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { SendSmsDto } from './dto/create-user.dto';
 import { verifyCodeDto } from './dto/verify-code.dto';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/entity/user.entity';
-import { Repository } from 'typeorm';
 import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
@@ -57,10 +55,11 @@ export class AuthService {
         return token;
     }
 
-    async register(registerDto :RegisterDto){
-      return  await this.userService.updateUserInfo(
-            registerDto.phone,registerDto.name,registerDto.family
-        );
-        
+    async register(registerDto :RegisterDto, file:Express.Multer.File){
+        if(!file){
+            throw new BadRequestException("file is not uploaded");
+        }
+        registerDto.avatar = file.path;
+      return  await this.userService.registerUserInfo(registerDto);
     }
 }
