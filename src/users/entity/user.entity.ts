@@ -21,8 +21,8 @@ export class User{
     long:number;
     @Column({type:'double',default:null,nullable:true})
     lat:number;
-    @CreateDateColumn({type:"datetime",default: () => "CURRENT_TIMESTAMP"})  
+    @CreateDateColumn({type:"datetime"})  
     created_at:Date;
-    @UpdateDateColumn({type:"datetime",default: () => "CURRENT_TIMESTAMP"})  
+    @UpdateDateColumn({type:"datetime"})  
     updated_at:Date;
 }

@@ -4,11 +4,14 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entity/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { CategoryModule } from './admin/category/category.module';
+import { ProductModule } from './admin/product/product.module';
+import { BrandModule } from './admin/brand/brand.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      host:'192.168.43.138',
+      host:'localhost',
       type:"mysql",
       port:3306,
       database:'digi-store',
@@ -16,10 +19,13 @@ import { AuthModule } from './auth/auth.module';
       password:'',
 
       synchronize:true,
-      entities:[User]
+      entities:[__dirname + '/**/*.entity{.ts,.js}'],
     }),
     UsersModule,
-    AuthModule],
+    AuthModule,
+    CategoryModule,
+    ProductModule,
+    BrandModule],
   controllers: [],
   providers: [],
 })

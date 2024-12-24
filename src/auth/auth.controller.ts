@@ -45,9 +45,9 @@ export class AuthController {
             @Res() res:Response,
             @Body() registerDto:RegisterDto
         ){
-           await this.authService.register(registerDto,avatar);
+           await this.authService.register(avatar,registerDto);
            return res.status(HttpStatus.OK).json({
-            msg:"user registered",
+            msg:"کاربر ثبت نام شد",
             statusCode:HttpStatus.OK,
            })
         }

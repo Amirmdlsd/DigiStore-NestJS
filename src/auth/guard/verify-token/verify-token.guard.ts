@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
@@ -14,12 +15,12 @@ export class VerifyTokenGuard implements CanActivate {
     const AuthorizationHeader = req.headers.authorization;
     const {type , token }= AuthorizationHeader.split(' ');
     if(type !== 'Bearer'){
-      throw new UnauthorizedException('token is invalid');
+      throw new UnauthorizedException('توکن معتبر نیست');
     }
     const decodedToken = this.jwtService.verify(token);
     if(
-      decodedToken.phone !== req.body.phone ){
-      throw new UnauthorizedException('token is invalid');
+      req.body.phone !== decodedToken.phone  ){
+      throw new UnauthorizedException('توکن معتبر نیست');
 
     }
 

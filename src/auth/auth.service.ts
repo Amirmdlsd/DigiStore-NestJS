@@ -55,11 +55,16 @@ export class AuthService {
         return token;
     }
 
-    async register(registerDto :RegisterDto, file:Express.Multer.File){
+    async register(file:Express.Multer.File,registerDto :RegisterDto){
+       try {
         if(!file){
             throw new BadRequestException("file is not uploaded");
         }
         registerDto.avatar = file.path;
       return  await this.userService.registerUserInfo(registerDto);
+       } catch (error) {
+        console.log(error);
+        throw new BadRequestException("خطایی رخ داده است");
+       }
     }
 }

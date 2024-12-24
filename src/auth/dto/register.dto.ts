@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsNumberString, IsString } from "class-validator";
 
 export class RegisterDto{
     @IsString()
@@ -10,20 +10,19 @@ export class RegisterDto{
     @IsNotEmpty()
     family:string;
 
-    @IsString()
+    @IsNumberString()
     @IsNotEmpty()
     phone:string;
 
-    @IsNumber()
+    @IsNumberString()
     @IsNotEmpty()
     long:number;
 
-    @IsNumber()
+    @IsNumberString()
     @IsNotEmpty()
     lat:number;
 
-    @IsString()
-    @IsNotEmpty()
+    
     avatar:string;
 
 }
