@@ -16,5 +16,6 @@ import { diskStorage } from 'multer';
     TypeOrmModule.forFeature([Category])],
   controllers: [CategoryController],
   providers: [CategoryService],
+  exports:[CategoryService]
 })
 export class CategoryModule {}

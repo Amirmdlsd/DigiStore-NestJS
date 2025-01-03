@@ -1,34 +1,59 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Res, HttpStatus } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  @UseInterceptors(FileInterceptor('image'))
+ async create(@UploadedFile()image:Express.Multer.File,@Body() 
+  createProductDto: CreateProductDto,@Res() res:Response) {
+    await this.productService.create(createProductDto,image);
+    return res.status(HttpStatus.CREATED).json({
+      message:"محصول ایجاد شد",
+       statusCode:HttpStatus.OK
+    })
   }
 
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  async findAll(@Res() res:Response) {
+    const data = await this.productService.findAll();
+    return res.status(HttpStatus.OK).json({
+      data,
+       statusCode:HttpStatus.OK
+    })
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  @UseInterceptors(FileInterceptor('image'))
+  async findOne(@Res() res:Response,@Param('id') id: string) {
+    const data =await this.productService.findOne(+id);
+    return res.status(HttpStatus.OK).json({
+      data,
+       statusCode:HttpStatus.OK
+    })
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+ async update(@UploadedFile()image:Express.Multer.File,
+  @Res() res:Response,@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+    await this.productService.update(+id, updateProductDto,image);
+    return res.status(HttpStatus.OK).json({
+      message:"محصول ویرایش شد",
+       statusCode:HttpStatus.OK
+    })
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+  async remove( @Res() res:Response,@Param('id') id: string) {
+    await this.productService.remove(+id);
+    return res.status(HttpStatus.OK).json({
+      message:"محصول حذف شد",
+       statusCode:HttpStatus.OK
+    })
   }
 }
