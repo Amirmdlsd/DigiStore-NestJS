@@ -8,6 +8,7 @@ import { ProductModule } from './admin/product/product.module';
 import { BrandModule } from './admin/brand/brand.module';
 import { ColorModule } from './color/color.module';
 import { ColorModule } from './admin/color/color.module';
+import { GalleryModule } from './admin/gallery/gallery.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { ColorModule } from './admin/color/color.module';
     CategoryModule,
     ProductModule,
     BrandModule,
-    ColorModule],
+    ColorModule,
+    GalleryModule],
   controllers: [],
   providers: [],
 })
