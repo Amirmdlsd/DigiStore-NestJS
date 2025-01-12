@@ -1,17 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Res, HttpStatus, UseGuards } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
+import { Role } from 'src/auth/decorator/role-decorator';
+import { VerifyTokenGuard } from 'src/auth/guard/verify-token/verify-token.guard';
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
+  @Role('admin')
+    @UseGuards(VerifyTokenGuard)
   @UseInterceptors(FileInterceptor('image'))
  async create(@UploadedFile()image:Express.Multer.File,@Body() 
-  createProductDto: CreateProductDto,@Res() res:Response) {
+  createProductDto: CreateProductDto,@Res() res:Response): Promise<Response<any, Record<string, any>>> {
     await this.productService.create(createProductDto,image);
     return res.status(HttpStatus.CREATED).json({
       message:"محصول ایجاد شد",
@@ -20,6 +24,8 @@ export class ProductController {
   }
 
   @Get()
+  @Role('admin')
+  @UseGuards(VerifyTokenGuard)
   async findAll(@Res() res:Response) {
     const data = await this.productService.findAll();
     return res.status(HttpStatus.OK).json({
@@ -29,6 +35,8 @@ export class ProductController {
   }
 
   @Get(':id')
+  @Role('admin')
+  @UseGuards(VerifyTokenGuard)
   @UseInterceptors(FileInterceptor('image'))
   async findOne(@Res() res:Response,@Param('id') id: string) {
     const data =await this.productService.findOne(+id);
@@ -39,6 +47,8 @@ export class ProductController {
   }
 
   @Patch(':id')
+  @Role('admin')
+  @UseGuards(VerifyTokenGuard)
  async update(@UploadedFile()image:Express.Multer.File,
   @Res() res:Response,@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     await this.productService.update(+id, updateProductDto,image);
@@ -49,6 +59,8 @@ export class ProductController {
   }
 
   @Delete(':id')
+  @Role('admin')
+  @UseGuards(VerifyTokenGuard)
   async remove( @Res() res:Response,@Param('id') id: string) {
     await this.productService.remove(+id);
     return res.status(HttpStatus.OK).json({

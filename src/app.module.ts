@@ -2,11 +2,12 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/entity/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './admin/category/category.module';
 import { ProductModule } from './admin/product/product.module';
 import { BrandModule } from './admin/brand/brand.module';
+import { ColorModule } from './color/color.module';
+import { ColorModule } from './admin/color/color.module';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { BrandModule } from './admin/brand/brand.module';
       host:'localhost',
       type:"mysql",
       port:3306,
-      database:'digi-store',
+      database:'digi_store',
       username:'root',
       password:'',
 
@@ -25,7 +26,8 @@ import { BrandModule } from './admin/brand/brand.module';
     AuthModule,
     CategoryModule,
     ProductModule,
-    BrandModule],
+    BrandModule,
+    ColorModule],
   controllers: [],
   providers: [],
 })
