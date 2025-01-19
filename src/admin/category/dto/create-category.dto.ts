@@ -5,9 +5,6 @@ export class CreateCategoryDto {
     @IsNotEmpty()
     @IsString()
     title: string;
-    
-    image:string;
-
-    // @IsOptional()
-    // parent_id:number
+    @IsOptional()
+    parent_id:number[]
 }

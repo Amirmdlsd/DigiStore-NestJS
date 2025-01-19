@@ -11,7 +11,11 @@ import { diskStorage } from 'multer';
 @Module({
   imports: [
     MulterModule.register({storage:diskStorage({
-      destination:join(__dirname,"../../../uploads/category/")
+      destination:join(__dirname,"../../../uploads/category/"),
+      filename:(req, file, cb) => {
+        const filename = `${Date.now()}-${file.originalname}`;
+        cb(null, filename);
+      }
     })}),
     TypeOrmModule.forFeature([Category])],
   controllers: [CategoryController],
