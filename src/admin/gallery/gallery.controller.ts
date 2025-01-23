@@ -1,15 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get,Res,Post, Body, Patch, Param, Delete, UseInterceptors, Query, ParseIntPipe, HttpStatus } from '@nestjs/common';
 import { GalleryService } from './gallery.service';
 import { CreateGalleryDto } from './dto/create-gallery.dto';
 import { UpdateGalleryDto } from './dto/update-gallery.dto';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
 
 @Controller('gallery')
 export class GalleryController {
   constructor(private readonly galleryService: GalleryService) {}
 
   @Post()
-  create(@Body() createGalleryDto: CreateGalleryDto) {
-    return this.galleryService.create(createGalleryDto);
+  @UseInterceptors(FilesInterceptor("images"))
+ async create(images:Array<Express.Multer.File>,
+  @Query("product_id",ParseIntPipe)id:number,@Res()response:Response) {
+    await this.galleryService.create(images,id);
+    return response.status(HttpStatus.OK).json({
+      message:"created",
+      status_code:HttpStatus.OK
+    });
   }
 
   @Get()

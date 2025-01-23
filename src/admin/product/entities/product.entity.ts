@@ -18,7 +18,7 @@ export class Product {
     @Column({type:'varchar'})
     description:string;
     @Column({type:'varchar'})
-    quantity:string;
+    quantity:number;
     @ManyToOne(()=>Category,(category)=>category.product)
     @JoinColumn({name:"category_id"})
     category:Category

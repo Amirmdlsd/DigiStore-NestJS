@@ -19,15 +19,9 @@ export class ProductService {
     if(!category){
       throw new Error("category not found");
     }
-    createProductDto.image = image.filename;
     const product =await this.productRepository.create({
       category,
-      discount:createProductDto.discount,
-      image:createProductDto.image,
-      quantity:createProductDto.quantity.toString(),
-      title:createProductDto.title,
-      price:createProductDto.price,
-      description:createProductDto.description
+      ...createProductDto
     });
     return  await this.productRepository.save(product);
   }
@@ -52,11 +46,11 @@ export class ProductService {
       fs.unlinkSync(join(__dirname,'../../../uploads/product',Product.image));
     }
     Product.title = updateProductDto.title??Product.title;
-    Product.image = updateProductDto.image??Product.image;
+    Product.image = image.filename??Product.image;
     Product.price = updateProductDto.price??Product.price;
     Product.discount = updateProductDto.discount??Product.discount;
     Product.description = updateProductDto.description??Product.description;
-    Product.quantity = updateProductDto.quantity.toString()??Product.quantity;
+    Product.quantity = updateProductDto.quantity??Product.quantity;
     Product.category = category;
     return await this.productRepository.save(Product);
   
