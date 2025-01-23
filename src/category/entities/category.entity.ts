@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Product } from "src/admin/product/entities/product.entity";
+import { Product } from "src/product/entities/product.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name:"categories"})

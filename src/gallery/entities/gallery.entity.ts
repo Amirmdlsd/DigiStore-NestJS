@@ -1,4 +1,4 @@
-import { Product } from "src/admin/product/entities/product.entity";
+import { Product } from "src/product/entities/product.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name:"galleries")
