@@ -51,12 +51,12 @@ export class ProductService {
     if (fs.existsSync(join(__dirname, '../../../uploads/product'))) {
       fs.unlinkSync(join(__dirname, '../../../uploads/product', Product.image));
     }
-    Product.title = updateProductDto.title ?? Product.title;
-    Product.image = image.filename ?? Product.image;
-    Product.price = updateProductDto.price ?? Product.price;
-    Product.discount = updateProductDto.discount ?? Product.discount;
-    Product.description = updateProductDto.description ?? Product.description;
-    Product.quantity = updateProductDto.quantity ?? Product.quantity;
+    Product.title = updateProductDto.title;
+    Product.image = image.filename;
+    Product.price = updateProductDto.price;
+    Product.discount = updateProductDto.discount;
+    Product.description = updateProductDto.description;
+    Product.quantity = updateProductDto.quantity;
     Product.category = category;
     return await this.productRepository.save(Product);
   }
